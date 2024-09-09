@@ -9,12 +9,14 @@ processors:
 extensions:
   health_check: {}
 exporters:
+  debug:
+    verbosity: detailed
   otlp:
     endpoint: jaeger:4317
     tls:
       insecure: true
   prometheus:
-    endpoint: "localhost:9091"
+    endpoint: "localhost:9090"
 service:
   pipelines:
     traces:
@@ -22,4 +24,7 @@ service:
       exporters: [otlp]
     metrics:
       receivers: [otlp]
-      exporters: [prometheus]
+      exporters: [prometheus,debug]
+    #logs:
+    #  receivers: [otlp]
+    #  exporters: [debug]
