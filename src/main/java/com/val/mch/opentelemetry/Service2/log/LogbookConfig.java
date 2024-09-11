@@ -7,6 +7,9 @@ import org.zalando.logbook.core.DefaultHttpLogFormatter;
 import org.zalando.logbook.core.DefaultHttpLogWriter;
 import org.zalando.logbook.core.DefaultSink;
 
+import static org.zalando.logbook.core.Conditions.exclude;
+import static org.zalando.logbook.core.Conditions.requestTo;
+
 @Configuration
 public class LogbookConfig {
 
@@ -14,6 +17,10 @@ public class LogbookConfig {
     public Logbook logbook()
     {
         return Logbook.builder()
+                .condition(exclude(
+                    requestTo("/actuator/**"),
+                    requestTo("/admin/**"))
+                )
                 .sink(new DefaultSink(new DefaultHttpLogFormatter(),new DefaultHttpLogWriter())).build();
     }
 }

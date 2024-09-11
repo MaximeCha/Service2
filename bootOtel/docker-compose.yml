@@ -1,5 +1,14 @@
 version: "3"
 services:
+  service2:
+    image: maximec44/mch-service1:1.0.8
+    command:
+      - -javaagent:./opentelemetry-javaagent.jar
+      - -Dotel.service.name=service2
+      - -Dotel.traces.exporter=otlp
+      - -Dotel.logs.exporter=otlp
+    ports:
+      - "8082:8082"
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
     command: ["--config=/etc/otel-collector-config.yaml"]
@@ -8,6 +17,7 @@ services:
     ports:
       - "4317:4317" # OTLP gRPC receiver
       - "4318:4318" # OTLP Http receiver
+      - "8888:8888"   # Prometheus metrics exposed by the collector
   jaeger:
     image: jaegertracing/all-in-one:latest
     volumes:
@@ -29,6 +39,6 @@ services:
     image: prom/prometheus:latest
     command: --enable-feature=otlp-write-receive
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/prometheus/prometheus.yml
     ports:
       - "9090:9090"
