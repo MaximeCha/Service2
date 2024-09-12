@@ -1,15 +1,19 @@
 scrape_configs:
+  - job_name: 'spm-metrics-sources'
+    scrape_interval: 1s
+    static_configs:
+     - targets: ['otel-collector:8889']
   - job_name: 'otel-collector'
     scrape_interval: 1s
     static_configs:
       - targets: ['otel-collector:8888']
-  - job_name: 'service1'
-    metrics_path: /actuator/prometheus
-    scrape_interval: 1s
-    static_configs:
-      - targets: ['localhost:8081']
-  - job_name: 'service2'
-    metrics_path: /actuator/prometheus
-    scrape_interval: 1s
-    static_configs:
-      - targets: ['service2:8082']
+#  - job_name: 'service1'
+#    metrics_path: /actuator/prometheus
+#    scrape_interval: 1s
+#    static_configs:
+#      - targets: ['service1:8081']
+#  - job_name: 'service2'
+#    metrics_path: /actuator/prometheus
+#    scrape_interval: 1s
+#    static_configs:
+#      - targets: ['service2:8082']

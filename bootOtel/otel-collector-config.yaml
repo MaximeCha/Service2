@@ -6,6 +6,7 @@ receivers:
       http:
         endpoint: 0.0.0.0:4318
 processors:
+  batch:
 extensions:
   health_check: {}
 exporters:
@@ -16,15 +17,18 @@ exporters:
     tls:
       insecure: true
   prometheus:
-    endpoint: localhost:8889
+    endpoint: "0.0.0.0:8889"
+  prometheusremotewrite:
+    endpoint: http://prometheus:9090/api/v1/write
+    target_info:
+      enabled: true
+
 service:
   pipelines:
     traces:
       receivers: [otlp]
+      processors: [batch]
       exporters: [otlp]
-    logs:
-      receivers: [otlp]
-      exporters: [debug]
     metrics:
       receivers: [otlp]
-      exporters: [prometheus]
+      exporters: [prometheusremotewrite,prometheus]

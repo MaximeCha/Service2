@@ -78,18 +78,17 @@
 				<configuration>
 					<container>
 						<mainClass>com.val.mch.opentelemetry.Service2.Service2Application</mainClass>
-						<args>
-							<arg>-javaagent:/opentelemetry-javaagent.jar</arg>
-							<arg>-Dotel.service.name=service2</arg>
-							<arg>-Dotel.traces.exporter=otlp</arg>
-							<arg>-Dotel.logs.exporter=otlp</arg>
-						</args>
+						<jvmFlags>
+							<jvmFlag>-javaagent:./opentelemetry-javaagent.jar</jvmFlag>
+							<jvmFlag>-Dotel.exporter.otlp.endpoint=http://otel-collector:4318</jvmFlag>
+							<jvmFlag>-Dotel.service.name=service2</jvmFlag>
+						</jvmFlags>
 					</container>
 					<from>
 						<image>openjdk:22</image>
 					</from>
 					<to>
-						<image>maximec44/mch-service1:1.0.4</image>
+						<image>maximec44/mch-service2:latest</image>
 					</to>
 				</configuration>
 			</plugin>
