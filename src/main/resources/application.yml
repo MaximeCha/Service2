@@ -1,6 +1,13 @@
 spring:
   application:
     name: service2
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+    stream:
+      name: "my-stream"
 management:
   endpoints:
     web:
