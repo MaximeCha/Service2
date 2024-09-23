@@ -5,6 +5,9 @@ receivers:
         endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
+connectors:
+  spanmetrics:
+    namespace: spanmetrics
 processors:
   batch:
 extensions:
@@ -18,6 +21,8 @@ exporters:
       insecure: true
   prometheus:
     endpoint: "0.0.0.0:8889"
+    resource_to_telemetry_conversion:
+      enabled: true
   prometheusremotewrite:
     endpoint: http://prometheus:9090/api/v1/write
     target_info:
@@ -28,7 +33,8 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp]
+      exporters: [otlp,spanmetrics]
     metrics:
-      receivers: [otlp]
+      receivers: [spanmetrics,otlp]
+      processors: [batch]
       exporters: [prometheusremotewrite,prometheus]
